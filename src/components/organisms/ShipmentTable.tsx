@@ -64,9 +64,9 @@ export default function ShipmentTable() {
       <Card>
         <RowHeader>
           <HeaderCell shrink={true}>SEÇ</HeaderCell>
-          <HeaderCell>ID</HeaderCell>
+          <HeaderCell width='4rem'>ID</HeaderCell>
           <HeaderCell>FİRMA</HeaderCell>
-          <HeaderCell>GÜZERGAH</HeaderCell>
+          <HeaderCell width='17rem'>GÜZERGAH</HeaderCell>
           <HeaderCell>ARAÇ</HeaderCell>
           <HeaderCell>ŞÖFÖR</HeaderCell>
           <HeaderCell>TARİH</HeaderCell>
@@ -117,8 +117,11 @@ const RowHeader = styled.div`
   align-items: center;
   padding: 0.75rem 1rem;
 `;
-const HeaderCell = styled.div<{ shrink?: boolean }>`
-  flex: ${({ shrink }) => (shrink ? '0 0 2.5rem' : '1')};
+const HeaderCell = styled.div<{ shrink?: boolean; width?: string }>`
+  flex: ${({ shrink, width }) =>
+    shrink ? '0 0 2.5rem' : width ? `0 0 ${width}` : '1'};
+  font-size: 0.875rem;
+  color: #374151;
   font-size: 0.75rem;
   font-weight: 600;
   color: #6b7280;

@@ -58,10 +58,9 @@ export default function ShipmentRow({ shipment }: Props) {
   return (
     <Row>
       <Cell shrink>
-        <input type='checkbox' />
+        <Checkbox />
       </Cell>
-
-      <Cell>
+      <Cell width='4rem'>
         <DarkBold>{id}</DarkBold>
       </Cell>
 
@@ -76,13 +75,13 @@ export default function ShipmentRow({ shipment }: Props) {
         )}
       </Cell>
 
-      <Cell>
+      <Cell width='17rem'>
         {departure_address ? (
           <>
             <Route>
               <Dot color='#2563EB' />
               <RouteText>
-                <DarkMedium>{`${departure_address.type_value}`}</DarkMedium>,
+                <DarkMedium>{`${departure_address.type_value}`}, </DarkMedium>,
                 {`${departure_address.city.name}, ${departure_address.district.name}`}
               </RouteText>
             </Route>
@@ -90,7 +89,7 @@ export default function ShipmentRow({ shipment }: Props) {
               <Route>
                 <DotOutline color='#2563EB' />
                 <RouteText>
-                  <DarkMedium>{`${delivery_address.type_value}`}</DarkMedium>
+                  <DarkMedium>{`${delivery_address.type_value}`}, </DarkMedium>
                   {`${delivery_address.city.name}, ${delivery_address.district.name}`}
                 </RouteText>
               </Route>
@@ -143,6 +142,21 @@ export default function ShipmentRow({ shipment }: Props) {
   );
 }
 
+const Checkbox = styled.input.attrs({ type: 'checkbox' })`
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.2rem;
+  background-color: white;
+  cursor: pointer;
+
+  &:checked {
+    background-color: ${colors.darkerBlue};
+    border-color: ${colors.darkerBlue};
+  }
+`;
+
 const Row = styled.div`
   display: flex;
   align-items: center;
@@ -152,8 +166,9 @@ const Row = styled.div`
     border-bottom: none;
   }
 `;
-const Cell = styled.div<{ shrink?: boolean }>`
-  flex: ${({ shrink }) => (shrink ? '0 0 2.5rem' : '1')};
+const Cell = styled.div<{ shrink?: boolean; width?: string }>`
+  flex: ${({ shrink, width }) =>
+    shrink ? '0 0 2.5rem' : width ? `0 0 ${width}` : '1'};
   font-size: 0.875rem;
   color: #374151;
 `;
@@ -163,11 +178,11 @@ const IconText = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
-const DarkBold = styled.p`
+const DarkBold = styled.span`
   font-weight: 600;
   color: ${colors.darkerBlue};
 `;
-const DarkMedium = styled.p`
+const DarkMedium = styled.span`
   font-weight: 500;
   color: ${colors.darkerBlue};
 `;
