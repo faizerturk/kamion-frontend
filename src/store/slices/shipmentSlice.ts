@@ -79,7 +79,15 @@ const shipmentSlice = createSlice({
       })
       .addCase(fetchShipmentsAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.shipments = [...state.shipments, ...action.payload.data];
+
+        const incoming = action.payload.data;
+        const existingIds = new Set(state.shipments.map((s) => s.id));
+
+        const newData = incoming.filter(
+          (item: any) => !existingIds.has(item.id)
+        );
+
+        state.shipments = [...state.shipments, ...newData];
         state.currentPage = action.payload.meta.current_page;
         state.lastPage = action.payload.meta.last_page;
         state.hasMore =

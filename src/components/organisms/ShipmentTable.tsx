@@ -1,5 +1,4 @@
-// src/components/organisms/ShipmentTable.tsx
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import SearchInput from '../molecules/SearchInput';
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
@@ -10,39 +9,41 @@ import {
 import colors from '@/public/style/colors';
 import ShipmentRow from '../molecules/ShipmentRow';
 
+// {message: "Attempt to read property "currency_code" on null", exception: "ErrorException",…}
+// exception
+// :
+// "ErrorException"
+// file
+// :
+// "/var/www/app/Http/Resources/Shipper/Shipment/Price/KamionPercentResource.php"
+// line
+// :
+// 20
+// message
+// :
+// "Attempt to read property \"currency_code\" on null"
+// trace
+// :
+// [{file: "/var/www/app/Http/Resources/Shipper/Shipment/Price/KamionPercentResource.php", line: 20,…},…]
+
 export default function ShipmentTable() {
   const dispatch = useAppDispatch();
   const { shipments, loading, filter, currentPage, hasMore } = useAppSelector(
     (state) => state.shipment
   );
   const { token } = useAppSelector((state) => state.auth);
-  const loaderRef = useRef<HTMLDivElement | null>(null);
 
-  const loadMore = useCallback(() => {
-    if (!loading && hasMore) {
-      dispatch(fetchShipmentsAsync({ page: currentPage + 1, id: filter.id }));
-    }
-  }, [dispatch, loading, hasMore, currentPage, filter.id]);
-
-  useEffect(() => {
-    if (token && shipments.length === 0) {
-      dispatch(fetchShipmentsAsync({ page: 1 }));
-    }
-  }, [dispatch, token]);
+  // const loadMore = useCallback(() => {
+  //   if (!loading && hasMore) {
+  //     dispatch(fetchShipmentsAsync({ page: currentPage + 1, id: filter.id }));
+  //   }
+  // }, [dispatch, loading, hasMore, currentPage, filter.id]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
-          loadMore();
-        }
-      },
-      { threshold: 1.0 }
-    );
-    const current = loaderRef.current;
-    current && observer.observe(current);
-    return () => current && observer.unobserve(current);
-  }, [loadMore, hasMore, loading]);
+    if (token && shipments.length === 0 && !loading) {
+      dispatch(fetchShipmentsAsync({ page: 1, id: filter.id }));
+    }
+  }, [dispatch, token, shipments.length, loading, filter.id]);
 
   const handleSearch = (value: string) => {
     if (value !== filter.id) {
@@ -73,19 +74,24 @@ export default function ShipmentTable() {
           <HeaderCell>DURUM</HeaderCell>
         </RowHeader>
 
-        <Body>
-          {shipments.map((s) => (
-            <ShipmentRow key={s.id} shipment={s} />
-          ))}
-
+        {shipments.map((s) => (
+          <ShipmentRow key={s.id} shipment={s} />
+        ))}
+        {/* <Body>
           {loading && <LoadingText>Yükleniyor...</LoadingText>}
-          <Loader ref={loaderRef} />
-        </Body>
+
+          //Infinite scroll kapalı: manuel buton *
+          {!loading && hasMore && (
+            <LoadMoreButton onClick={loadMore}>Daha fazla yükle</LoadMoreButton>
+          )}
+        </Body> 
+        */}
       </Card>
     </>
   );
 }
 
+/* STYLED COMPONENTS */
 const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -100,18 +106,15 @@ const HeaderTitle = styled.h2`
 const SearchWrapper = styled.div`
   width: 16rem;
 `;
-
 const Card = styled.div`
   background: #ffffff;
   border-radius: 0.75rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 `;
-
 const RowHeader = styled.div`
   display: flex;
   align-items: center;
-  background: transparent;
   padding: 0.75rem 1rem;
 `;
 const HeaderCell = styled.div<{ shrink?: boolean }>`
@@ -121,7 +124,6 @@ const HeaderCell = styled.div<{ shrink?: boolean }>`
   color: #6b7280;
   text-transform: uppercase;
 `;
-
 const Body = styled.div`
   display: flex;
   flex-direction: column;
@@ -131,7 +133,17 @@ const LoadingText = styled.div`
   text-align: center;
   color: #6b7280;
 `;
+const LoadMoreButton = styled.button`
+  margin: 1rem auto;
+  padding: 0.5rem 1.5rem;
+  background: ${colors.darkerBlue};
+  color: #fff;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
 
-const Loader = styled.div`
-  height: 1px;
+  &:hover {
+    opacity: 0.9;
+  }
 `;

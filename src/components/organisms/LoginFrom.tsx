@@ -7,9 +7,9 @@ import Button from '../atoms/Button';
 import Input from '../atoms/Input';
 import colors from '@/public/style/colors';
 import Image from 'next/image';
-import icon from '@/public/assets/icon.png';
 import iconMail from '@/public/assets/iconMail.png';
 import iconPassword from '@/public/assets/iconPassword.png';
+import slimIcon from '@/public/assets/slimIcon.png';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('frontend@kamion.co');
@@ -30,7 +30,10 @@ export default function LoginForm() {
     <Container>
       <Main>
         <Header>
-          <Image src={icon.src} alt='icon' width={50} height={50} />
+          <BlueDot>
+            <Image src={slimIcon.src} alt='icon' width={50} height={50} />
+          </BlueDot>
+
           <Title>Kamion®</Title>
           <Subtitle>Dashboard Log In</Subtitle>
         </Header>
@@ -85,7 +88,7 @@ export default function LoginForm() {
 
       <Footer>
         <FooterText>© Copyright 2024, </FooterText>
-        <FooterText bold>Kamion Logistics </FooterText>
+        <FooterText bold={true}>Kamion Logistics </FooterText>
         <FooterText>- All rights reserved.</FooterText>
       </Footer>
     </Container>
@@ -112,6 +115,16 @@ const Header = styled.div`
   text-align: left;
   margin-bottom: 2rem;
   color: ${colors.darkerBlue};
+`;
+const BlueDot = styled.div`
+  height: 58px;
+  width: 56px;
+  background-color: ${colors.primaryBlue};
+  border-radius: 50%;
+  align-items: center;
+  padding-right: 10px;
+  display: flex;
+  justify-content: center;
 `;
 const Title = styled.h1`
   font-size: 44px;
