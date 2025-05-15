@@ -31,7 +31,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </TitleGroup>
           </Brand>
 
-          <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+          {/* <LogoutButton onClick={handleLogout}>Logout</LogoutButton> */}
         </HeaderContainer>
       </Header>
       <Main>{children}</Main>

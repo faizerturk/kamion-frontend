@@ -53,31 +53,40 @@ const StyledInput = styled.input<StyledInputProps>`
   background-color: white;
   color: black;
   border-radius: 0.5rem;
-  border: 1px solid ${({ hasError }) => (hasError ? '#f87171' : '#d1d5db')};
+  border: 2px solid ${({ hasError }) => (hasError ? '#dc2626' : '#d1d5db')};
 
   padding: ${({ hasIcon }) =>
-    hasIcon ? '1.25rem 2.5rem 0.75rem 1rem' : '1.25rem 1rem 0.75rem'};
+    hasIcon ? '1.5rem 2.5rem 0.75rem 1rem' : '1.5rem 1rem 0.75rem'};
 
   font-size: 1rem;
   line-height: 1.25;
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 1px #3b82f6;
+    border-color: ${({ hasError }) => (hasError ? '#dc2626' : '#3b82f6')};
+    box-shadow: 0 0 0 1px
+      ${({ hasError }) => (hasError ? '#dc2626' : '#3b82f6')};
   }
 `;
 
 const FloatingLabel = styled.label<{ hasError: boolean }>`
   position: absolute;
-  top: -0.6rem;
+  top: -0.65rem;
   left: 1rem;
   background: white;
   padding: 0 0.25rem;
   font-size: 0.75rem;
+  font-weight: 500;
   text-transform: uppercase;
-  color: ${({ hasError }) => (hasError ? '#f87171' : '#9ca3af')};
+  color: ${({ hasError }) => (hasError ? '#dc2626' : '#9ca3af')};
   pointer-events: none;
+`;
+
+const ErrorText = styled.p`
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #dc2626;
+  text-align: right;
 `;
 
 const IconWrapper = styled.div<{ hasError: boolean }>`
@@ -90,11 +99,4 @@ const IconWrapper = styled.div<{ hasError: boolean }>`
   padding-right: 0.75rem;
   pointer-events: none;
   color: ${({ hasError }) => (hasError ? '#f87171' : '#9ca3af')};
-`;
-
-const ErrorText = styled.p`
-  margin-top: 0.75rem;
-  font-size: 0.875rem;
-  color: #dc2626;
-  text-align: right;
 `;

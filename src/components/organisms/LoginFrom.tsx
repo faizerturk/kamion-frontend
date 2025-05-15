@@ -16,7 +16,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState('Frontend.2024');
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { loading, error } = useAppSelector((state) => state.auth);
+  const { loading, error: authError } = useAppSelector((state) => state.auth);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,43 +26,53 @@ export default function LoginForm() {
     }
   };
 
+  // emailError e-postayla ilgili global hata mesajıysa göster
+  const emailError = authError?.toLowerCase().includes('email')
+    ? authError
+    : undefined;
+
+  // şifre hatasıysa direkt göster, yoksa e-posta hatası değilse fallback mesaj
+  const passwordError = authError
+    ? authError.toLowerCase().includes('password')
+      ? authError
+      : !emailError
+      ? 'Your password is missing or entered incorrectly.'
+      : undefined
+    : undefined;
+
   return (
     <Container>
       <Main>
         <Header>
           <BlueDot>
-            <Image src={slimIcon.src} alt='icon' width={50} height={50} />
+            <Image src={slimIcon} alt='icon' width={50} height={50} />
           </BlueDot>
-
           <Title>Kamion®</Title>
           <Subtitle>Dashboard Log In</Subtitle>
         </Header>
 
         <Form onSubmit={handleSubmit}>
-          {error && <ErrorBox>{error}</ErrorBox>}
-
           <Field>
-            <StyledInput
+            <Input
               label='Email Address'
               placeholder='Email Address'
               value={email}
-              icon={
-                <Image src={iconMail.src} alt='mail' width={20} height={20} />
-              }
+              icon={<Image src={iconMail} alt='mail' width={20} height={20} />}
               onChange={(e) => setEmail(e.target.value)}
               required
+              error={emailError}
             />
           </Field>
 
           <Field>
-            <StyledInput
+            <Input
               id='password'
               label='Password'
               type='password'
               value={password}
               icon={
                 <Image
-                  src={iconPassword.src}
+                  src={iconPassword}
                   alt='password'
                   width={20}
                   height={20}
@@ -70,6 +80,7 @@ export default function LoginForm() {
               }
               onChange={(e) => setPassword(e.target.value)}
               required
+              error={passwordError}
             />
           </Field>
 
@@ -88,7 +99,7 @@ export default function LoginForm() {
 
       <Footer>
         <FooterText>© Copyright 2024, </FooterText>
-        <FooterText bold={true}>Kamion Logistics </FooterText>
+        <FooterText bold>Kamion Logistics </FooterText>
         <FooterText>- All rights reserved.</FooterText>
       </Footer>
     </Container>
@@ -116,20 +127,22 @@ const Header = styled.div`
   margin-bottom: 2rem;
   color: ${colors.darkerBlue};
 `;
+
 const BlueDot = styled.div`
   height: 58px;
   width: 56px;
   background-color: ${colors.primaryBlue};
   border-radius: 50%;
-  align-items: center;
-  padding-right: 10px;
   display: flex;
+  align-items: center;
   justify-content: center;
 `;
+
 const Title = styled.h1`
   font-size: 44px;
   font-weight: 500;
 `;
+
 const Subtitle = styled.p`
   font-size: 44px;
   font-weight: 400;
@@ -142,26 +155,7 @@ const Form = styled.form`
   gap: 1.5rem;
 `;
 
-const ErrorBox = styled.div`
-  background-color: #fee2e2;
-  border: 1px solid #fca5a5;
-  color: #991b1b;
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
-`;
-
 const Field = styled.div``;
-
-const StyledInput = styled(Input)`
-  width: 100%;
-  margin-top: 0.25rem;
-  label {
-    color: #6b7280;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    margin-bottom: 0.25rem;
-  }
-`;
 
 const SubmitButton = styled(Button)`
   align-self: flex-end;
@@ -184,11 +178,10 @@ const Footer = styled.div`
   gap: 0.25rem;
   padding: 1rem 4rem;
 `;
+
 const FooterText = styled.p<{ bold?: boolean }>`
-  display: inline;
   margin: 0;
   font-size: 0.875rem;
-  margin-bottom: 1rem;
   font-weight: ${({ bold }) => (bold ? 500 : 400)};
   color: ${colors.darkerBlue};
 `;

@@ -14,9 +14,16 @@ export default function AuthLayout({
         <SidebarContent>
           <p>ONE PLATFORM FOR ALL ROAD FREIGHT</p>
           <h1>Visibility, Efficiency, Sustainability</h1>
-          <h2>MENA's Most Efficient Digital Freight Network</h2>
-          <JoinButton>
-            Join the Kamion Logistics Network Sign Up<Arrow>→</Arrow>
+          <h2>
+            <span>MENA`s</span> Most Efficient Digital Freight Network
+          </h2>
+          <JoinButton
+            onClick={() =>
+              window.open('https://www.kamion.co/iletisim', '_blank')
+            }
+          >
+            Join the Kamion Logistics Network <span> Sign Up</span>
+            <Arrow>→</Arrow>
           </JoinButton>
         </SidebarContent>
       </Sidebar>
@@ -69,7 +76,11 @@ const SidebarContent = styled.div`
     line-height: 54px;
     margin-bottom: 1rem;
     color: ${colors.lightWhite};
+    span {
+      color: rgba(123, 185, 250, 1);
+    }
   }
+
   h1 {
     font-size: 64px;
     line-height: 139%;
@@ -95,6 +106,13 @@ const JoinButton = styled.button`
   display: inline-flex;
   align-items: center;
 
+  span {
+    text-decoration: underline;
+    color: ${colors.white} !important;
+    font-weight: 500;
+    padding-left: 6px;
+  }
+
   &:hover {
     opacity: 0.9;
   }
@@ -102,6 +120,8 @@ const JoinButton = styled.button`
 
 const Arrow = styled.span`
   margin-left: 0.5rem;
+  text-decoration: none !important;
+  color: ${colors.white};
 `;
 
 const FooterText = styled.div`
