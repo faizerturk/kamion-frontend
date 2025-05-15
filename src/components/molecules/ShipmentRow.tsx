@@ -159,18 +159,34 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
 
 const Row = styled.div`
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
   padding: 0.75rem 1rem;
   border-top: 1px solid #f3f4f6;
+  gap: 1rem;
+
   &:last-child {
     border-bottom: none;
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+  }
 `;
+
 const Cell = styled.div<{ shrink?: boolean; width?: string }>`
   flex: ${({ shrink, width }) =>
     shrink ? '0 0 2.5rem' : width ? `0 0 ${width}` : '1'};
   font-size: 0.875rem;
   color: #374151;
+  min-width: ${({ width }) => width || 'auto'};
+
+  @media (max-width: 768px) {
+    flex: 1 1 100%;
+    width: 100%;
+  }
 `;
 
 const IconText = styled.div`
@@ -236,21 +252,25 @@ const PriceBadge = styled.div`
 const getStatusStyles = (status: string) => {
   switch (status) {
     case 'Araç tedariği yapıldı':
-      return { bg: '#D1FAE5', color: '#065F46' };
+      return { bg: 'rgba(218, 245, 236, 1)', color: 'rgba(31, 203, 145, 1)' };
     case 'İncelemede / Bekleniyor':
-      return { bg: '#f7e6da', color: '#bc672f' };
+      return { bg: 'rgba(242, 243, 244, 1)', color: 'rgba(9, 34, 86, 1)' };
     case 'Yük yayınlandı':
-      return { bg: '#c7c8fe', color: '#0e2492' };
+      return { bg: 'rgba(253, 187, 96, 0.12)', color: 'rgba(224, 132, 4, 1)' };
     default:
       return { bg: '#E5E7EB', color: '#374151' };
   }
 };
 const StatusBadge = styled.span<{ status: string }>`
-  display: inline-block;
-  padding: 0.5rem 0.75rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 10rem;
+  padding: 0.5rem 0;
   font-size: 0.75rem;
   font-weight: 500;
   background: ${({ status }) => getStatusStyles(status).bg};
   color: ${({ status }) => getStatusStyles(status).color};
   border-radius: 9999px;
+  text-align: center;
 `;

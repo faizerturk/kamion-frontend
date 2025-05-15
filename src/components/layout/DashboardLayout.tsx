@@ -4,6 +4,7 @@ import { useAppDispatch } from '@/src/store/hooks';
 import { logoutAsync } from '@/src/store/slices/authSlice';
 import { ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import colors from '@/public/style/colors';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -53,7 +54,7 @@ const HeaderContainer = styled.div`
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 4rem;
 
@@ -71,8 +72,8 @@ const Brand = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
 `;
 
 const TitleGroup = styled.div`
@@ -80,13 +81,13 @@ const TitleGroup = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 1.25rem;
+  font-size: 14px;
   font-weight: 600;
-  color: '#1e40af';
+  color: ${colors.primaryBlue};
 `;
 
 const Subtitle = styled.p`
-  font-size: 0.75rem;
+  font-size: 14px;
   color: #6b7280;
   margin: 0;
 `;
